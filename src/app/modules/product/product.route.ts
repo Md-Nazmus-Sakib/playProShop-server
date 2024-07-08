@@ -8,6 +8,9 @@ const router = Router();
 //get all Product Router
 router.get("/", ProductControllers.getAllProduct);
 
+//get single product Router
+router.get("/:id", ProductControllers.getSingleProductInfo);
+
 //create all product router
 router.post(
   "/create-product",

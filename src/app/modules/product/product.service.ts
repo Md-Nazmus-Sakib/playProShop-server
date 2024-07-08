@@ -9,6 +9,18 @@ const getAllProductFromDB = async () => {
   return result;
 };
 
+//get single product by id
+const getSingleProductInfoIntoDB = async (productId: string) => {
+  //check if the product is exist
+  const existProduct = await Product.findById(productId);
+  if (!existProduct) {
+    throw new AppError(httpStatus.NOT_FOUND, "Product  not found");
+  }
+  // Find the booking information by the user's ID
+  const productInfo = await existProduct;
+  return productInfo;
+};
+
 //create Product
 const createProductInfoDB = async (productData: TProduct) => {
   const result = await Product.create(productData);
@@ -31,7 +43,8 @@ const deleteProductFromDB = async (productId: string) => {
 };
 
 export const ProductServices = {
-  createProductInfoDB,
   getAllProductFromDB,
+  getSingleProductInfoIntoDB,
+  createProductInfoDB,
   deleteProductFromDB,
 };
