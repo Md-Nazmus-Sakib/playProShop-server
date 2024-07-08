@@ -7,7 +7,7 @@ const productSchema = new Schema<TProduct>(
       type: String,
       required: [true, "Product name is required"],
       trim: true,
-      maxlength: [50, "Product name must be at most 30 characters long"],
+      maxlength: [50, "Product name must be at most 50 characters long"],
     },
     category: {
       type: String,
