@@ -1,27 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-import { Request, Response } from "express";
+
 import { ProductServices } from "./product.service";
+import sendResponse from "../../utils/sendResponce";
+import httpStatus from "http-status";
+import catchAsync from "../../utils/catchAsync";
 
-const createProduct = async (req: Request, res: Response) => {
-  try {
-    const productData = req.body;
+const createProduct = catchAsync(async (req, res) => {
+  const productData = req.body;
 
-    const result = await ProductServices.createProductInfoDB(productData);
+  const result = await ProductServices.createProductInfoDB(productData);
 
-    res.status(200).json({
-      success: true,
-      message: "Product is Created Successfully",
-      data: result,
-    });
-  } catch (err: any) {
-    res.status(500).json({
-      success: false,
-      message: err.message || "Something Went Wrong .",
-      error: err,
-    });
-  }
-};
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Product is Created Successfully",
+    data: result,
+  });
+});
 
 export const ProductControllers = {
   createProduct,
