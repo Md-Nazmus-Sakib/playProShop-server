@@ -15,4 +15,7 @@ router.post(
   ProductControllers.createProduct
 );
 
+//delete product by id router
+router.delete("/:id", ProductControllers.deleteProduct);
+
 export const ProductRoutes = router;
