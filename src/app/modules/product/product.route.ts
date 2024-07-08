@@ -5,6 +5,10 @@ import { ProductValidation } from "./product.validation";
 
 const router = Router();
 
+//get all Product Router
+router.get("/", ProductControllers.getAllProduct);
+
+//create all product router
 router.post(
   "/create-product",
   validateRequest(ProductValidation.productValidationSchema),
