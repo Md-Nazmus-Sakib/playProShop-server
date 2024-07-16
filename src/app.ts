@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(cors());
 
 // application routes
-app.use("/api/product", ProductRoutes);
+app.use("/api", ProductRoutes);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello World!");

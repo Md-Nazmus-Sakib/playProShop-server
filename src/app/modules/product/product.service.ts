@@ -2,13 +2,39 @@ import httpStatus from "http-status";
 import AppError from "../../errors/AppError";
 import { TProduct } from "./product.interface";
 import { Product } from "./product.model";
+import QueryBuilder from "../../builder/QueryBuilder";
+import { productSearchableFields } from "./product.constant";
 
 //get all Product
-const getAllProductFromDB = async () => {
-  const result = await Product.find();
+const getAllProductFromDB = async (query: Record<string, unknown>) => {
+  const productQuery = new QueryBuilder(Product.find(), query)
+
+    .search(productSearchableFields)
+
+    .filter()
+    .priceRange()
+    .sort()
+    .paginate();
+
+  const result = await productQuery.modelQuery;
+
   return result;
 };
-
+// Get All Query
+const getAllProductQueryInDB = async () => {
+  const categories = await Product.distinct("category");
+  const brands = await Product.distinct("brand");
+  const maxPrice = await Product.aggregate([
+    {
+      $group: {
+        _id: null,
+        maxPrice: { $max: "$price" },
+      },
+    },
+  ]);
+  const queryData = { categories, brands, maxPrice };
+  return queryData;
+};
 //get single product by id
 const getSingleProductInfoIntoDB = async (productId: string) => {
   //check if the product is exist
@@ -44,6 +70,7 @@ const deleteProductFromDB = async (productId: string) => {
 
 export const ProductServices = {
   getAllProductFromDB,
+  getAllProductQueryInDB,
   getSingleProductInfoIntoDB,
   createProductInfoDB,
   deleteProductFromDB,

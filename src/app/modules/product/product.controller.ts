@@ -8,7 +8,7 @@ import catchAsync from "../../utils/catchAsync";
 
 //get all product controller
 const getAllProduct = catchAsync(async (req, res) => {
-  const result = await ProductServices.getAllProductFromDB();
+  const result = await ProductServices.getAllProductFromDB(req.query);
   if (result.length === 0) {
     sendResponse(res, {
       statusCode: httpStatus.NOT_FOUND,
@@ -21,6 +21,17 @@ const getAllProduct = catchAsync(async (req, res) => {
     statusCode: httpStatus.OK,
     success: true,
     message: "Products are retrieved successfully",
+    data: result,
+  });
+});
+//get all product Query
+const getAllProductQuery = catchAsync(async (req, res) => {
+  const result = await ProductServices.getAllProductQueryInDB();
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Products Query are retrieved successfully",
     data: result,
   });
 });
@@ -40,8 +51,7 @@ const getSingleProductInfo = catchAsync(async (req, res) => {
 
 //create Product controller
 const createProduct = catchAsync(async (req, res) => {
-  const productData = req.body;
-
+  const productData = req.body.data;
   const result = await ProductServices.createProductInfoDB(productData);
 
   sendResponse(res, {
@@ -67,6 +77,7 @@ const deleteProduct = catchAsync(async (req, res) => {
 
 export const ProductControllers = {
   getAllProduct,
+  getAllProductQuery,
   getSingleProductInfo,
   createProduct,
   deleteProduct,

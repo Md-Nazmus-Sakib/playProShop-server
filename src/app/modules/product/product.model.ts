@@ -9,6 +9,12 @@ const productSchema = new Schema<TProduct>(
       trim: true,
       maxlength: [50, "Product name must be at most 50 characters long"],
     },
+    description: {
+      type: String,
+      required: [true, "Description  is required"],
+      trim: true,
+      maxlength: [100, "Description must be at most 100 characters long"],
+    },
     category: {
       type: String,
       required: [true, "Category is required"],
@@ -32,14 +38,7 @@ const productSchema = new Schema<TProduct>(
       min: [0, "Rating must be at least 0"],
       max: [5, "Rating must be at most 5"],
     },
-    productDescription: {
-      type: String,
-      required: [true, "Product description is required"],
-      maxlength: [
-        1000,
-        "Product description must be at most 1000 characters long",
-      ],
-    },
+
     price: {
       type: Number,
       required: [true, "Price is required"],
@@ -54,6 +53,11 @@ const productSchema = new Schema<TProduct>(
         },
         message: (props) => `${props.value} is not a valid URL!`,
       },
+    },
+    details: {
+      type: String,
+      required: [true, "Product Details is required"],
+      maxlength: [1000, "Product Details must be at most 1000 characters long"],
     },
   },
   {
