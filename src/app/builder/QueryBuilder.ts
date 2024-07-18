@@ -7,7 +7,8 @@ class QueryBuilder<T> {
   public query: Record<string, unknown>;
 
   constructor(modelQuery: Query<T[], T>, query: Record<string, unknown>) {
-    (this.modelQuery = modelQuery), (this.query = query);
+    this.modelQuery = modelQuery;
+    this.query = query;
   }
 
   search(searchableFields: string[]) {
@@ -37,9 +38,17 @@ class QueryBuilder<T> {
     ];
     excludeFields.forEach((el) => delete queryObj[el]);
 
+    // Remove undefined or empty string fields from queryObj
+    Object.keys(queryObj).forEach((key) => {
+      if (queryObj[key] === undefined || queryObj[key] === "") {
+        delete queryObj[key];
+      }
+    });
+
     this.modelQuery = this.modelQuery.find(queryObj as FilterQuery<T>);
     return this;
   }
+
   priceRange() {
     const minPrice = this?.query?.minPrice;
     const maxPrice = this?.query?.maxPrice;

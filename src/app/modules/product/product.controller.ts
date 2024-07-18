@@ -11,7 +11,7 @@ const getAllProduct = catchAsync(async (req, res) => {
   const result = await ProductServices.getAllProductFromDB(req.query);
   if (result.length === 0) {
     sendResponse(res, {
-      statusCode: httpStatus.NOT_FOUND,
+      statusCode: httpStatus.OK,
       success: false,
       message: "No Data Found",
       data: result,
