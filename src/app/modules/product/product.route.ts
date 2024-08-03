@@ -12,7 +12,7 @@ router.get("/product", ProductControllers.getAllProduct);
 router.get("/query", ProductControllers.getAllProductQuery);
 
 //get single product Router
-router.get("/:id", ProductControllers.getSingleProductInfo);
+router.get("/product/:id", ProductControllers.getSingleProductInfo);
 
 //create all product router
 router.post(

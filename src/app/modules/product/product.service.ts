@@ -42,7 +42,7 @@ const getSingleProductInfoIntoDB = async (productId: string) => {
   if (!existProduct) {
     throw new AppError(httpStatus.NOT_FOUND, "Product  not found");
   }
-  // Find the booking information by the user's ID
+  // Find the booking information by the product's ID
   const productInfo = await existProduct;
   return productInfo;
 };

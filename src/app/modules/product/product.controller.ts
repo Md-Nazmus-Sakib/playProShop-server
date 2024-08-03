@@ -39,6 +39,7 @@ const getAllProductQuery = catchAsync(async (req, res) => {
 //get single Product controller
 const getSingleProductInfo = catchAsync(async (req, res) => {
   const { id } = req.params;
+
   const result = await ProductServices.getSingleProductInfoIntoDB(id);
 
   sendResponse(res, {
