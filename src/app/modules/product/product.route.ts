@@ -20,8 +20,14 @@ router.post(
   validateRequest(ProductValidation.productValidationSchema),
   ProductControllers.createProduct
 );
+// update Product
+router.put(
+  "/product/:id",
+  validateRequest(ProductValidation.updateProductValidationSchema),
+  ProductControllers.updateProductInfo
+);
 
 //delete product by id router
-router.delete("/:id", ProductControllers.deleteProduct);
+router.delete("/product/:id", ProductControllers.deleteProduct);
 
 export const ProductRoutes = router;

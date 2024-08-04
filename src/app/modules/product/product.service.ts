@@ -35,6 +35,7 @@ const getAllProductQueryInDB = async () => {
   const queryData = { categories, brands, maxPrice };
   return queryData;
 };
+
 //get single product by id
 const getSingleProductInfoIntoDB = async (productId: string) => {
   //check if the product is exist
@@ -53,12 +54,34 @@ const createProductInfoDB = async (productData: TProduct) => {
   return result;
 };
 
+//Update Product Service
+const updateProductInfoIntoDB = async (
+  id: string,
+  payload: Partial<TProduct>
+) => {
+  // Find the product by its ID
+  const product = await Product.findById(id);
+
+  // Check if the product is found
+  if (!product) {
+    throw new AppError(httpStatus.NOT_FOUND, "product not found");
+  }
+
+  const result = await Product.findByIdAndUpdate(
+    id,
+    { $set: payload },
+    { new: true, runValidators: true }
+  );
+
+  return result;
+};
+
 //Delete Product
 const deleteProductFromDB = async (productId: string) => {
-  // Find the bike by its ID
+  // Find the product by its ID
   const product = await Product.findById(productId);
 
-  // Check if the bike is found
+  // Check if the product is found
   if (!product) {
     throw new AppError(httpStatus.NOT_FOUND, "Product not found");
   }
@@ -73,5 +96,6 @@ export const ProductServices = {
   getAllProductQueryInDB,
   getSingleProductInfoIntoDB,
   createProductInfoDB,
+  updateProductInfoIntoDB,
   deleteProductFromDB,
 };
