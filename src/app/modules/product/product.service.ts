@@ -7,19 +7,48 @@ import { productSearchableFields } from "./product.constant";
 
 //get all Product
 const getAllProductFromDB = async (query: Record<string, unknown>) => {
-  const productQuery = new QueryBuilder(Product.find(), query)
+  try {
+    // Create an instance of QueryBuilder to build the query
+    const productQuery = new QueryBuilder(Product.find(), query)
+      .search(productSearchableFields)
+      .filter()
+      .priceRange();
 
-    .search(productSearchableFields)
+    // Perform the count query before pagination
+    const totalProducts = await productQuery.modelQuery
+      .clone()
+      .countDocuments();
 
-    .filter()
-    .priceRange()
-    .sort()
-    .paginate();
+    // Apply sorting and pagination
+    productQuery.sort().paginate();
 
-  const result = await productQuery.modelQuery;
+    // Execute the final query with sorting and pagination
+    const products = await productQuery.modelQuery;
 
-  return result;
+    // Return the products along with the total count
+    return {
+      totalProducts,
+      products,
+    };
+  } catch (error) {
+    console.error("Error fetching products from DB:", error);
+    throw new Error("Failed to fetch products");
+  }
 };
+
+//   const productQuery = new QueryBuilder(Product.find(), query)
+
+//     .search(productSearchableFields)
+
+//     .filter()
+//     .priceRange()
+//     .sort()
+//     .paginate();
+
+//   const result = await productQuery.modelQuery;
+
+//   return result;
+// };
 // Get All Query
 const getAllProductQueryInDB = async () => {
   const categories = await Product.distinct("category");

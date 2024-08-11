@@ -9,7 +9,7 @@ import catchAsync from "../../utils/catchAsync";
 //get all product controller
 const getAllProduct = catchAsync(async (req, res) => {
   const result = await ProductServices.getAllProductFromDB(req.query);
-  if (result.length === 0) {
+  if (result.products.length === 0) {
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: false,
@@ -68,7 +68,7 @@ const updateProductInfo = catchAsync(async (req, res) => {
   const updateData = req.body;
 
   const { id } = req.params;
-  console.log(id, updateData);
+
   const result = await ProductServices.updateProductInfoIntoDB(id, updateData);
 
   sendResponse(res, {

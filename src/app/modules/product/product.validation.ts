@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+// Validation schema for creating a new product
 const productValidationSchema = z.object({
   body: z.object({
     data: z.object({
@@ -10,9 +11,19 @@ const productValidationSchema = z.object({
       description: z
         .string()
         .trim()
-        .min(2, { message: "Product Description is required" }),
+        .min(5, { message: "Product Description is required" }),
 
-      category: z.string().trim().min(2, { message: "Category is required" }),
+      category: z.enum(
+        [
+          "Fitness Equipment",
+          "Team Sports Gear",
+          "Outdoor Recreation",
+          "Water Sports",
+          "Cycling",
+          "Golf",
+        ],
+        { message: "Invalid Category" }
+      ),
 
       stockQuantity: z
         .number()
@@ -29,15 +40,17 @@ const productValidationSchema = z.object({
 
       price: z.number().min(0, { message: "Price must be at least 0" }),
 
-      image: z.string().trim().min(1, { message: "Image url is required" }),
+      image: z.string().trim().url({ message: "Invalid URL format" }),
+
       details: z
         .string()
         .trim()
-        .min(1, { message: "Product Description is required" }),
+        .min(5, { message: "Product Details are required" }),
     }),
   }),
 });
 
+// Validation schema for updating an existing product
 const updateProductValidationSchema = z.object({
   body: z.object({
     productName: z
@@ -48,13 +61,21 @@ const updateProductValidationSchema = z.object({
     description: z
       .string()
       .trim()
-      .min(2, { message: "Product Description is required" })
+      .min(5, { message: "Product Description is required" })
       .optional(),
 
     category: z
-      .string()
-      .trim()
-      .min(2, { message: "Category is required" })
+      .enum(
+        [
+          "Fitness Equipment",
+          "Team Sports Gear",
+          "Outdoor Recreation",
+          "Water Sports",
+          "Cycling",
+          "Golf",
+        ],
+        { message: "Invalid Category" }
+      )
       .optional(),
 
     stockQuantity: z
@@ -81,15 +102,12 @@ const updateProductValidationSchema = z.object({
       .min(0, { message: "Price must be at least 0" })
       .optional(),
 
-    image: z
-      .string()
-      .trim()
-      .min(1, { message: "Image url is required" })
-      .optional(),
+    image: z.string().trim().url({ message: "Invalid URL format" }).optional(),
+
     details: z
       .string()
       .trim()
-      .min(1, { message: "Product Description is required" })
+      .min(5, { message: "Product Details are required" })
       .optional(),
   }),
 });

@@ -1,6 +1,7 @@
 import { model, Schema } from "mongoose";
 import { TProduct } from "./product.interface";
 
+// Define the schema for the Product model
 const productSchema = new Schema<TProduct>(
   {
     productName: {
@@ -11,15 +12,22 @@ const productSchema = new Schema<TProduct>(
     },
     description: {
       type: String,
-      required: [true, "Description  is required"],
+      required: [true, "Description is required"],
       trim: true,
-      maxlength: [100, "Description must be at most 100 characters long"],
+      maxlength: [200, "Description must be at most 200 characters long"],
     },
     category: {
       type: String,
       required: [true, "Category is required"],
+      enum: [
+        "Fitness Equipment",
+        "Team Sports Gear",
+        "Outdoor Recreation",
+        "Water Sports",
+        "Cycling",
+        "Golf",
+      ],
       trim: true,
-      maxlength: [50, "Category must be at most 50 characters long"],
     },
     stockQuantity: {
       type: Number,
@@ -30,7 +38,7 @@ const productSchema = new Schema<TProduct>(
       type: String,
       required: [true, "Brand is required"],
       trim: true,
-      maxlength: [50, "Brand must be at most 50 characters long"],
+      max: [50, "Brand must be at most 50 characters long"],
     },
     rating: {
       type: Number,
@@ -38,7 +46,6 @@ const productSchema = new Schema<TProduct>(
       min: [0, "Rating must be at least 0"],
       max: [5, "Rating must be at most 5"],
     },
-
     price: {
       type: Number,
       required: [true, "Price is required"],
@@ -56,8 +63,8 @@ const productSchema = new Schema<TProduct>(
     },
     details: {
       type: String,
-      required: [true, "Product Details is required"],
-      maxlength: [1000, "Product Details must be at most 1000 characters long"],
+      required: [true, "Product details are required"],
+      max: [1000, "Product details must be at most 1000 characters long"],
     },
   },
   {
@@ -65,4 +72,5 @@ const productSchema = new Schema<TProduct>(
   }
 );
 
+// Create the Product model
 export const Product = model<TProduct>("Product", productSchema);
