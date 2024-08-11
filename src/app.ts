@@ -13,10 +13,7 @@ const app: Application = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: [
-      "https://play-pro-shop-client.vercel.app",
-      "http://localhost:5173",
-    ], // Include your local dev URL if needed
+    origin: ["https://play-pro-shop-client.vercel.app"], // Include your local dev URL if needed
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"],
